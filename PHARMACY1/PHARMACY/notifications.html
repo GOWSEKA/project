@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Notifications</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function loadNotifications() {
+            let notifications = JSON.parse(localStorage.getItem("notifications")) || [];
+            let notificationList = document.getElementById("notificationList");
+            
+            if (notifications.length === 0) {
+                notificationList.innerHTML = "<p>No new notifications.</p>";
+                return;
+            }
+
+            notificationList.innerHTML = "";
+            notifications.forEach((notification, index) => {
+                let li = document.createElement("li");
+                li.classList.add("p-2", "border", "rounded", "mb-2");
+                li.innerText = `${notification.date} - ${notification.message}`;
+                notificationList.appendChild(li);
+            });
+        }
+        
+        document.addEventListener("DOMContentLoaded", loadNotifications);
+    </script>
+</head>
+<body class="bg-gray-100 font-sans flex flex-col min-h-screen">
+
+    <header class="bg-blue-600 p-4 text-white flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Notifications</h1>
+        <button onclick="location.href='admin.html'" class="bg-red-500 px-3 py-1 rounded text-sm">Back to Admin</button>
+    </header>
+
+    <main class="container mx-auto py-10">
+        <h2 class="text-xl font-bold mb-6">View Notifications</h2>
+        <ul id="notificationList" class="space-y-4"></ul>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4 mt-10">
+        <p>&copy; 2025 MedSprout.</p>
+        <p>All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

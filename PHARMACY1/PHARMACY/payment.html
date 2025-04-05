@@ -1,0 +1,122 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedSprout - Payment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function showPaymentDetails() {
+            let paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+            let cardDetails = document.getElementById('cardDetails');
+            let onlineDetails = document.getElementById('onlineDetails');
+            let codMessage = document.getElementById('codMessage');
+
+            cardDetails.style.display = paymentMethod === "card" ? "block" : "none";
+            onlineDetails.style.display = paymentMethod === "online" ? "block" : "none";
+            codMessage.style.display = paymentMethod === "cod" ? "block" : "none";
+        }
+
+        function processPayment() {
+            const name = document.getElementById("name").value;
+            const mobile = document.getElementById("mobile").value;
+            const address = document.getElementById("address").value;
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+            const message = document.getElementById('message');
+
+            if (!name || !mobile || !address) {
+                message.textContent = "Please fill in all customer details.";
+                message.className = "text-red-500 mt-4";
+                return;
+            }
+
+            if (!paymentMethod) {
+                message.textContent = "Please select a payment method.";
+                message.className = "text-red-500 mt-4";
+                return;
+            }
+
+            message.textContent = "Processing payment...";
+            message.className = "text-blue-500 mt-4";
+
+            setTimeout(() => {
+                if (paymentMethod.value === "card" || paymentMethod.value === "online") {
+                    message.textContent = "Payment successful! Redirecting...";
+                } else {
+                    message.textContent = "Order placed! Pay cash on delivery.";
+                }
+
+                message.className = "text-green-500 mt-4";
+
+                setTimeout(() => {
+                    window.location.href = "order-confirmation.html"; 
+                }, 2000);
+            }, 2000);
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans flex flex-col min-h-screen justify-center items-center">
+
+    <header class="bg-blue-600 p-4 text-white w-full text-center">
+        <h1 class="text-2xl font-bold">MedSprout</h1>
+    </header>
+
+    <main class="bg-white p-8 rounded-lg shadow-lg w-96 text-center">
+        <h2 class="text-2xl font-bold mb-4">Customer Details</h2>
+        <div class="mb-6">
+            <input type="text" id="name" placeholder="Full Name" class="w-full p-2 border rounded mb-4">
+            <input type="text" id="mobile" placeholder="Mobile Number" class="w-full p-2 border rounded mb-4">
+            <textarea id="address" placeholder="Address" class="w-full p-2 border rounded mb-4"></textarea>
+        </div>
+        
+        <h2 class="text-2xl font-bold mb-4">Payment Options</h2>
+        <p class="mb-6">Select your preferred payment method and proceed.</p>
+
+        <div class="mb-6">
+            <label class="block">
+                <input type="radio" name="paymentMethod" value="card" class="mr-2" onclick="showPaymentDetails()"> Credit/Debit Card
+            </label>
+            <label class="block">
+                <input type="radio" name="paymentMethod" value="online" class="mr-2" onclick="showPaymentDetails()"> Online Payment (UPI, Net Banking)
+            </label>
+            <label class="block">
+                <input type="radio" name="paymentMethod" value="cod" class="mr-2" onclick="showPaymentDetails()"> Cash on Delivery
+            </label>
+        </div>
+
+        <div id="cardDetails" style="display:none;" class="mb-6">
+            <h3 class="text-xl font-bold mb-4">Enter Card Details</h3>
+            <input type="text" placeholder="Card Number" class="w-full p-2 border rounded mb-4">
+            <input type="text" placeholder="Expiry Date (MM/YY)" class="w-full p-2 border rounded mb-4">
+            <input type="text" placeholder="CVV" class="w-full p-2 border rounded mb-4">
+        </div>
+
+        <div id="onlineDetails" style="display:none;" class="mb-6">
+            <h3 class="text-xl font-bold mb-4">Select Online Payment Method</h3>
+            <select class="w-full p-2 border rounded mb-4">
+                <option value="">Select Payment Gateway</option>
+                <option value="paypal">PayPal</option>
+                <option value="stripe">Stripe</option>
+                <option value="upi">Google Pay / UPI</option>
+            </select>
+        </div>
+
+        <div id="codMessage" style="display:none;" class="mb-6">
+            <h3 class="text-xl font-bold mb-4">Cash on Delivery</h3>
+            <p>Pay cash when your order arrives. No online payment required.</p>
+        </div>
+
+        <button onclick="processPayment()" class="bg-blue-500 text-white px-6 py-3 rounded mt-4 hover:bg-blue-600">
+            Confirm & Pay
+        </button>
+
+        <div id="message" class="mt-4 text-xl"></div>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4 w-full mt-10">
+        <p>&copy; 2025 MedSprout.</p>
+        <p>All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

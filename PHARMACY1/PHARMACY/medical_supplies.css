@@ -1,0 +1,73 @@
+const supplies = [
+    { name: "First Aid Box", description: "Essential medical kit for emergencies.", price: "₹500", manufacture: "01-2024", expiry: "12-2026", imgSrc: "images/firstaidbox.jpg" },
+    { name: "Cotton", description: "Sterilized cotton for medical use.", price: "₹100", manufacture: "02-2024", expiry: "02-2027", imgSrc: "images/cotton.jpg" },
+    { name: "Sugar Test Kit", description: "Monitor blood sugar levels easily.", price: "₹750", manufacture: "03-2024", expiry: "03-2026", imgSrc: "images/sugartest.jpg" },
+    { name: "Injection", description: "Sterile injection for medical use.", price: "₹50", manufacture: "04-2024", expiry: "04-2026", imgSrc: "images/injection.jpg" }
+];
+
+function searchSupplies() {
+    const query = document.getElementById("searchBar").value.toLowerCase();
+    const suggestionsBox = document.getElementById("suggestions");
+    suggestionsBox.innerHTML = "";
+
+    let filtered = supplies.filter(supply => supply.name.toLowerCase().includes(query));
+
+    document.querySelectorAll(".supply").forEach(card => {
+        let supplyName = card.dataset.name.toLowerCase();
+        if (supplyName.includes(query)) {
+            card.classList.remove("hidden");
+        } else {
+            card.classList.add("hidden");
+        }
+    });
+
+    if (query) {
+        if (filtered.length > 0) {
+            suggestionsBox.classList.remove("hidden");
+            filtered.forEach(item => {
+                const div = document.createElement("div");
+                div.classList.add("px-4", "py-2", "hover:bg-gray-200", "cursor-pointer");
+                div.innerText = item.name;
+                div.onclick = () => {
+                    document.getElementById("searchBar").value = item.name;
+                    suggestionsBox.classList.add("hidden");
+                    searchSupplies();
+                };
+                suggestionsBox.appendChild(div);
+            });
+        } else {
+            suggestionsBox.classList.add("hidden");
+        }
+    } else {
+        suggestionsBox.classList.add("hidden");
+        document.querySelectorAll(".supply").forEach(card => card.classList.remove("hidden"));
+    }
+}
+
+function showDetails(name, description, price, manufacture, expiry, imgSrc) {
+    document.getElementById("supply-img").src = imgSrc;
+    document.getElementById("supply-name").textContent = name;
+    document.getElementById("supply-description").textContent = description;
+    document.getElementById("supply-price").textContent = `Price: ${price}`;
+    document.getElementById("supply-manufacture").textContent = `Manufacture Date: ${manufacture}`;
+    document.getElementById("supply-expiry").textContent = `Expiry Date: ${expiry}`;
+    document.getElementById("quantity").value = 1;
+    document.getElementById("supply-details").classList.remove("hidden");
+}
+
+function closeDetails() {
+    document.getElementById("supply-details").classList.add("hidden");
+}
+
+function addToCart() {
+    let quantity = parseInt(document.getElementById("quantity").value);
+    let cartCount = localStorage.getItem("cartCount") ? parseInt(localStorage.getItem("cartCount")) : 0;
+    cartCount += quantity;
+    localStorage.setItem("cartCount", cartCount);
+    document.getElementById("cart-count").textContent = cartCount;
+    alert(`✅ Added ${quantity} item(s) to cart! 💚`);
+}
+
+window.onload = function() {
+    document.getElementById("cart-count").textContent = localStorage.getItem("cartCount") || 0;
+};

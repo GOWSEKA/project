@@ -1,0 +1,136 @@
+<!-- Order Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedSprout - Order</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function loadOrderSummary() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let orderSummaryContainer = document.getElementById("orderSummaryContainer");
+            let totalAmountElement = document.getElementById("totalAmount");
+            let prescriptionInput = document.getElementById("prescriptionInput");
+            let paymentSection = document.getElementById("paymentSection");
+            orderSummaryContainer.innerHTML = "";
+            let totalAmount = 0;
+
+            if (cart.length === 0) {
+                orderSummaryContainer.innerHTML = "<p class='text-red-500'>No items in your order.</p>";
+                totalAmountElement.textContent = "₹0";
+                return;
+            }
+
+            cart.forEach((item) => {
+                let itemPrice = item.quantity * parseFloat(item.price);
+                totalAmount += itemPrice;
+
+                let itemDiv = document.createElement("div");
+                itemDiv.className = "flex justify-between items-center p-4 bg-white shadow rounded mb-4";
+                itemDiv.innerHTML = `
+                    <div>
+                        <h3 class="text-lg font-bold">${item.name}</h3>
+                        <p class="font-semibold">Price per unit: ₹${item.price}</p>
+                        <p class="font-bold text-green-600">Total: ₹${itemPrice.toFixed(2)}</p>
+                    </div>
+                `;
+                orderSummaryContainer.appendChild(itemDiv);
+            });
+
+            totalAmountElement.textContent = `₹${totalAmount.toFixed(2)}`;
+        }
+
+        function validatePrescription() {
+            let fileInput = document.getElementById("prescriptionInput");
+            let file = fileInput.files[0];
+            let fileFeedback = document.getElementById("fileFeedback");
+            let paymentSection = document.getElementById("paymentSection");
+            
+            if (!file) {
+                fileFeedback.textContent = "Please upload a prescription.";
+                fileFeedback.classList.add("text-red-500");
+                paymentSection.style.display = "none";
+                return;
+            }
+
+            let fileType = file.type;
+            if (fileType.startsWith("image/") && fileType !== "image/png" && fileType !== "image/jpeg") {
+                fileFeedback.textContent = "Invalid file. Please upload a valid prescription (PNG or JPEG).";
+                fileFeedback.classList.add("text-red-500");
+                paymentSection.style.display = "none";
+                return;
+            }
+
+            fileFeedback.textContent = "Prescription uploaded successfully!";
+            fileFeedback.classList.remove("text-red-500");
+            fileFeedback.classList.add("text-green-600");
+            paymentSection.style.display = "block";
+        }
+
+        function placeOrder() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let paymentMode = document.getElementById("paymentMode").value;
+            let totalAmount = 0;
+
+            if (cart.length === 0) {
+                alert("Please add products to your cart before placing an order.");
+                return;
+            }
+
+            cart.forEach((item) => {
+                totalAmount += item.quantity * parseFloat(item.price);
+            });
+
+            if (paymentMode === "cod") {
+                alert("Order placed successfully!");
+                console.log("Bill Summary:");
+                cart.forEach((item) => {
+                    console.log(`${item.name} - ₹${(item.quantity * parseFloat(item.price)).toFixed(2)}`);
+                });
+                console.log("Total Amount: ₹" + totalAmount.toFixed(2));
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans flex flex-col min-h-screen">
+    <header class="bg-blue-600 p-4 text-white flex justify-between items-center">
+        <h1 class="text-2xl font-bold">MedSprout</h1>
+        <a href="cart.html" class="text-white underline">Back to Cart</a>
+    </header>
+
+    <main class="container mx-auto py-10 flex-grow">
+        <h2 class="text-2xl font-bold mb-6">Order Summary</h2>
+        <div id="orderSummaryContainer" class="space-y-4"></div>
+        <div class="mt-6 p-4 bg-gray-200 rounded-lg text-xl font-semibold">
+            Total Order Value: <span id="totalAmount">₹0</span>
+        </div>
+        
+        <div class="mt-6">
+            <h3 class="text-lg font-bold">Upload Prescription</h3>
+            <input type="file" id="prescriptionInput" class="mt-2 p-2 border rounded" accept="image/png, image/jpeg" onchange="validatePrescription()">
+            <p id="fileFeedback" class="mt-2 text-sm"></p>
+        </div>
+
+        <div id="paymentSection" class="mt-6 hidden">
+            <h3 class="text-lg font-bold">Choose Payment Mode</h3>
+            <select id="paymentMode" class="mt-2 p-2 border rounded">
+                <option value="credit">Credit Card</option>
+                <option value="debit">Debit Card</option>
+                <option value="upi">UPI</option>
+                <option value="cod">Cash on Delivery</option>
+            </select>
+            <button class="mt-4 px-4 py-2 bg-green-600 text-white font-bold rounded" onclick="placeOrder()">Proceed to Pay</button>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4 mt-10">
+        <p>&copy; 2025 MedSprout.</p>
+        <p>All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", loadOrderSummary);
+    </script>
+</body>
+</html>

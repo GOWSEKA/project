@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - MedSprout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Retrieve the payment method from local storage
+            const paymentMethod = localStorage.getItem("paymentMethod");
+            const orderMessage = document.getElementById("orderMessage");
+
+            if (paymentMethod === "card") {
+                orderMessage.textContent = "Your payment was successful! Your order has been confirmed.";
+            } else if (paymentMethod === "online") {
+                orderMessage.textContent = "Your online payment was successful! Your order has been confirmed.";
+            } else if (paymentMethod === "cod") {
+                orderMessage.textContent = "Your order has been placed! Pay cash on delivery.";
+            } else {
+                orderMessage.textContent = "Thank you for your order!";
+            }
+
+            // Clear payment method after displaying it
+            localStorage.removeItem("paymentMethod");
+        });
+    </script>
+</head>
+<body class="bg-gray-100 font-sans flex flex-col min-h-screen">
+
+    <header class="bg-blue-600 p-4 text-white flex justify-between items-center">
+        <h1 class="text-2xl font-bold">MedSprout</h1>
+    </header>
+
+    <main class="container mx-auto py-10 text-center flex-grow">
+        <h2 class="text-3xl font-bold mb-4">Order Confirmation</h2>
+        <p id="orderMessage" class="text-xl text-gray-700"></p>
+
+        <div class="mt-6">
+            <a href="index.html" class="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600">
+                Continue Shopping
+            </a>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4 mt-10">
+        <p>&copy; 2025 MedSprout.</p>
+        <p>All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

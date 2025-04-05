@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paediatric Medicines - MedSprout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="script.js"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <header class="bg-blue-600 p-4 text-white flex justify-between items-center">
+        <h1 class="text-xl font-bold">MedSprout</h1>
+        <input type="text" id="searchBar" placeholder="Search medicines..." class="px-4 py-2 rounded text-black" onkeyup="searchMedicine()">
+    </header>
+    
+    <main class="container mx-auto py-10">
+        <h2 class="text-2xl font-bold mb-4">Paediatric Medicines</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="medicine-list">
+            <div class="medicine bg-white p-6 rounded shadow" data-name="vitamin syrup">
+                <h3 class="text-lg font-bold">Vitamin Syrup</h3>
+                <p>Boosts immunity and growth.</p>
+                <p class="font-semibold">Price: ₹120</p>
+                <button class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">Add to Cart</button>
+            </div>
+            <div class="medicine bg-white p-6 rounded shadow" data-name="cough syrup">
+                <h3 class="text-lg font-bold">Cough Syrup</h3>
+                <p>Relieves cough and throat irritation.</p>
+                <p class="font-semibold">Price: ₹150</p>
+                <button class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">Add to Cart</button>
+            </div>
+            <div class="medicine bg-white p-6 rounded shadow" data-name="fever drops">
+                <h3 class="text-lg font-bold">Fever Drops</h3>
+                <p>Reduces fever in children.</p>
+                <p class="font-semibold">Price: ₹90</p>
+                <button class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">Add to Cart</button>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="bg-gray-800 text-white text-center p-4 mt-10">&copy; 2025 MedSprout. All Rights Reserved.</footer>
+</body>
+</html>

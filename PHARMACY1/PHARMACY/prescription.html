@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedSprout - Prescription Upload</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/tesseract.js@2.1.0"></script>
+    <script>
+        async function validatePrescription() {
+            const prescriptionFile = document.getElementById('prescriptionFile').files[0];
+            const prescriptionImage = document.getElementById('prescriptionImage').files[0];
+            const description = document.getElementById('description').value.trim();
+            const message = document.getElementById('message');
+
+            if (!prescriptionFile && !prescriptionImage) {
+                message.textContent = "Please upload a prescription (PDF or Image).";
+                message.classList.add("text-red-500");
+                message.classList.remove("text-green-500");
+                return;
+            }
+
+            let isValid = false;
+
+            if (prescriptionFile && prescriptionFile.type === "application/pdf") {
+                isValid = await validatePDF(prescriptionFile);
+            }
+
+            if (prescriptionImage && (prescriptionImage.type === "image/jpeg" || prescriptionImage.type === "image/png")) {
+                isValid = await validateImage(prescriptionImage);
+            }
+
+            if (isValid && description !== "") {
+                message.textContent = "Prescription is valid. Proceeding to Payment Page...";
+                message.classList.add("text-green-500");
+                message.classList.remove("text-red-500");
+
+                // ✅ Redirect to payment page after 2 seconds
+                setTimeout(() => {
+                    window.location.href = "payment.html";
+                }, 2000);
+            } else {
+                message.textContent = "Invalid prescription content. Ensure it contains a hospital name and doctor.";
+                message.classList.add("text-red-500");
+                message.classList.remove("text-green-500");
+            }
+        }
+
+        async function validateImage(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = async function () {
+                    const { data } = await Tesseract.recognize(reader.result, 'eng');
+                    resolve(checkMedicalTerms(data.text));
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function validatePDF(file) {
+            return new Promise((resolve) => {
+                // Placeholder for PDF text extraction (e.g., using pdf.js)
+                resolve(true);  // ✅ Assume PDFs are valid for now
+            });
+        }
+
+        function checkMedicalTerms(text) {
+            const keywords = ["hospital", "doctor", "prescription", "clinic", "medic", "patient"];
+            return keywords.some(keyword => text.toLowerCase().includes(keyword));
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans flex flex-col min-h-screen">
+
+    <header class="bg-blue-600 p-4 text-white flex justify-between items-center">
+        <h1 class="text-2xl font-bold">MedSprout</h1>
+    </header>
+
+    <main class="container mx-auto py-10 text-center flex-grow">
+        <h2 class="text-2xl font-bold mb-4">Upload Your Prescription</h2>
+        
+        <p class="mb-6">Please upload your prescription file and provide a description to proceed with the payment.</p>
+
+        <!-- Prescription File Upload (PDF) -->
+        <input type="file" id="prescriptionFile" class="w-full md:w-1/2 mx-auto p-2 border rounded mb-2" accept=".pdf">
+        <p class="text-gray-600 mb-4">(Upload Prescription PDF)</p>
+
+        <!-- Prescription Image Upload (JPEG/PNG) -->
+        <input type="file" id="prescriptionImage" class="w-full md:w-1/2 mx-auto p-2 border rounded mb-2" accept="image/jpeg, image/png">
+        <p class="text-gray-600 mb-4">(Upload Prescription Image - JPG, PNG)</p>
+
+        <!-- Prescription Description -->
+        <textarea id="description" class="w-full md:w-1/2 mx-auto p-2 border rounded mb-6" placeholder="Enter any details about your prescription..."></textarea>
+        
+        <button onclick="validatePrescription()" class="bg-blue-500 text-white px-6 py-3 rounded mt-4 hover:bg-blue-600">
+            Submit Prescription
+        </button>
+
+        <div id="message" class="mt-4 text-xl"></div>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4 mt-10">
+        <p>&copy; 2025 MedSprout.</p>
+        <p>All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order from Supplier</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function addProduct() {
+            let productName = document.getElementById("productName").value;
+            let quantity = document.getElementById("quantity").value;
+            let supplierName = document.getElementById("supplierName").value;
+
+            if (!productName || !quantity || !supplierName) {
+                alert("Please fill out all fields.");
+                return;
+            }
+
+            let orderItem = {
+                productName: productName,
+                quantity: quantity,
+                supplierName: supplierName,
+                date: new Date().toLocaleDateString()
+            };
+
+            let orderList = JSON.parse(localStorage.getItem("orderList")) || [];
+            orderList.push(orderItem);
+
+            localStorage.setItem("orderList", JSON.stringify(orderList));
+
+            alert("Product added to order list.");
+            clearForm();
+            displayOrderList();
+        }
+
+        function displayOrderList() {
+            let orderList = JSON.parse(localStorage.getItem("orderList")) || [];
+            let orderListContainer = document.getElementById("orderListContainer");
+
+            orderListContainer.innerHTML = "";
+            orderList.forEach((orderItem, index) => {
+                let listItem = document.createElement("li");
+                listItem.classList.add("p-4", "border", "rounded", "mb-4", "bg-white", "shadow-sm");
+                listItem.innerHTML = ` 
+                    <strong>Product Name:</strong> ${orderItem.productName}<br>
+                    <strong>Quantity:</strong> ${orderItem.quantity}<br>
+                    <strong>Supplier:</strong> ${orderItem.supplierName}<br>
+                    <strong>Date:</strong> ${orderItem.date}<br>
+                `;
+                orderListContainer.appendChild(listItem);
+            });
+        }
+
+        function clearForm() {
+            document.getElementById("productName").value = "";
+            document.getElementById("quantity").value = "";
+            document.getElementById("supplierName").value = "";
+        }
+
+        function placeOrder() {
+            let orderList = JSON.parse(localStorage.getItem("orderList")) || [];
+            if (orderList.length === 0) {
+                alert("No products in the order list.");
+                return;
+            }
+
+            // Process the order here, like sending to the server or finalizing the order
+            alert("Order placed successfully!");
+            localStorage.removeItem("orderList"); // Clear the order list after placing the order
+            displayOrderList(); // Refresh the displayed order list
+        }
+
+        document.addEventListener("DOMContentLoaded", displayOrderList);
+    </script>
+</head>
+<body class="bg-gray-100 font-sans flex flex-col min-h-screen">
+
+    <header class="bg-blue-600 p-4 text-white flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Order from Supplier</h1>
+        <button onclick="location.href='admin.html'" class="bg-red-500 px-3 py-1 rounded text-sm">Back to Admin</button>
+    </header>
+
+    <main class="container mx-auto py-10">
+        <h2 class="text-xl font-bold mb-6">Place Order from Supplier</h2>
+        <form class="space-y-4">
+            <div>
+                <label for="productName" class="block text-sm font-bold">Product Name:</label>
+                <input type="text" id="productName" class="w-full p-2 border rounded" placeholder="Enter Product Name">
+            </div>
+            <div>
+                <label for="quantity" class="block text-sm font-bold">Quantity:</label>
+                <input type="number" id="quantity" class="w-full p-2 border rounded" placeholder="Enter Quantity">
+            </div>
+            <div>
+                <label for="supplierName" class="block text-sm font-bold">Supplier Name:</label>
+                <input type="text" id="supplierName" class="w-full p-2 border rounded" placeholder="Enter Supplier Name">
+            </div>
+            <div>
+                <button type="button" onclick="addProduct()" class="w-full bg-blue-600 text-white py-2 rounded">Add Product to Order</button>
+            </div>
+        </form>
+
+        <h3 class="text-lg font-bold mt-8">Current Order List</h3>
+        <ul id="orderListContainer" class="space-y-4 mt-4"></ul>
+
+        <div class="mt-8">
+            <button onclick="placeOrder()" class="w-full bg-green-600 text-white py-2 rounded">Place Order</button>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4 mt-10">
+        <p>&copy; 2025 MedSprout.</p>
+        <p>All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

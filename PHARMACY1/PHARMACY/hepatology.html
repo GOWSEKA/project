@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hepatology Medicines - MEDSPROUT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="hepatology.js"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <header class="bg-blue-600 p-4 text-white flex justify-between items-center relative">
+        <h1 class="text-xl font-bold">MedSprout</h1>
+        <div class="relative">
+            <input type="text" id="searchBar" placeholder="Search medicines..." class="px-4 py-2 rounded text-black" onkeyup="searchMedicine()">
+            <div id="suggestions" class="absolute left-0 mt-1 w-full bg-white shadow rounded hidden"></div>
+        </div>
+    </header>
+    
+    <main class="container mx-auto py-10 flex">
+        <!-- Medicine List -->
+        <div class="w-2/3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6" id="medicine-list">
+            <div class="medicine bg-white p-6 rounded shadow cursor-pointer" data-name="liver care tablets" onclick="showDetails('Liver Care Tablets', 'Supports liver health and detoxification.', '₹600', '01-2023', '01-2026', 'images/livercare.jpg', '1 strip = 10 tablets')">
+                <img src="images/livercare.jpg" alt="Liver Care Tablets" class="w-full h-56 object-contain mb-2">
+                <h3 class="text-lg font-bold">Liver Care Tablets (1 strip = 10 tablets)</h3>
+                <p>Supports liver health and detoxification.</p>
+                <p class="font-semibold">Price: ₹600</p>
+            </div>
+            <div class="medicine bg-white p-6 rounded shadow cursor-pointer" data-name="hepatol syrup" onclick="showDetails('Hepatol Syrup', 'Helps in liver recovery and improves digestion.', '₹400', '02-2024', '02-2026', 'images/hepatol_syrup.jpg', '100ml')">
+                <img src="images/hepatol_syrup.jpg" alt="Hepatol Syrup" class="w-full h-56 object-cover mb-2">
+                <h3 class="text-lg font-bold">Hepatol Syrup (100ml)</h3>
+                <p>Helps in liver recovery and improves digestion.</p>
+                <p class="font-semibold">Price: ₹400</p>
+            </div>
+            <div class="medicine bg-white p-6 rounded shadow cursor-pointer" data-name="hepa care capsules" onclick="showDetails('Hepa Care Capsules', 'Promotes liver function and prevents liver diseases.', '₹500', '03-2023', '03-2026', 'images/hepa_care_capsules.jpg', '1 strip = 10 capsules')">
+                <img src="images/hepa_care_capsules.jpg" alt="Hepa Care Capsules" class="w-full h-56 object-cover mb-2">
+                <h3 class="text-lg font-bold">Hepa Care Capsules (1 strip = 10 capsules)</h3>
+                <p>Promotes liver function and prevents liver diseases.</p>
+                <p class="font-semibold">Price: ₹500</p>
+            </div>
+            <div class="medicine bg-white p-6 rounded shadow cursor-pointer" data-name="hepatomax syrup" onclick="showDetails('Hepatomax Syrup', 'Aids in liver detoxification and regeneration.', '₹350', '04-2023', '04-2026', 'images/hepatomax_syrup.jpg', '100ml')">
+                <img src="images/hepatomax_syrup.jpg" alt="Hepatomax Syrup" class="w-full h-56 object-cover mb-2">
+                <h3 class="text-lg font-bold">Hepatomax Syrup (100ml)</h3>
+                <p>Aids in liver detoxification and regeneration.</p>
+                <p class="font-semibold">Price: ₹350</p>
+            </div>
+        </div>
+
+        <!-- Medicine Details -->
+        <div id="medicine-details" class="hidden bg-white p-6 rounded shadow w-1/3 relative">
+            <button onclick="closeDetails()" class="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded">X</button>
+            <img id="medicine-img" src="" alt="Medicine Image" class="w-full h-56 object-contain mb-2">
+            <h3 id="medicine-name" class="text-lg font-bold"></h3>
+            <p id="medicine-description"></p>
+            <p id="medicine-price" class="font-semibold"></p>
+            <p id="medicine-manufacture"></p>
+            <p id="medicine-expiry"></p>
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" value="1" min="1" class="border px-2 py-1 w-16">
+            <button class="mt-2 bg-blue-500 text-white px-4 py-2 rounded" onclick="addToCart()">Add to Cart</button>
+        </div>
+    </main>
+    
+    <footer class="bg-gray-800 text-white text-center p-4 mt-10">&copy; 2025 MedSprout. All Rights Reserved.</footer>
+</body>
+</html>
