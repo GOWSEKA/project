@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedSprout - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function filterDepartments() {
+            let input = document.getElementById('searchBar').value.toLowerCase();
+            let sections = document.getElementsByClassName('department-section');
+            
+            for (let section of sections) {
+                let title = section.getElementsByTagName('h3')[0].innerText.toLowerCase();
+                section.style.display = title.includes(input) ? "block" : "none";
+            }
+        }
+
+        function loadCartCount() {
+            let cartCount = localStorage.getItem("cartCount") || 0;
+            document.getElementById('cartCount').innerText = cartCount;
+        }
+
+        document.addEventListener("DOMContentLoaded", loadCartCount);
+    </script>
+</head>
+<body class="bg-gray-100 font-sans flex flex-col min-h-screen">
+
+    <header class="bg-blue-600 p-4 text-white flex justify-between items-center">
+        <h1 class="text-2xl font-bold">MedSprout</h1>
+        <div class="flex items-center space-x-4">
+            <div class="relative">
+                <span id="cartCount" class="absolute top-[-10px] right-[15px] bg-red-500 text-white text-xs rounded-full px-2">0</span>
+                <a href="cart.html">
+                    <img src="images/cart.jpg" alt="Cart" class="w-10 h-10">
+                </a>
+            </div>
+            <button onclick="location.href='Index.html'" class="bg-red-500 px-3 py-1 rounded text-sm">Logout</button>
+        </div>
+    </header>
+
+    <main class="container mx-auto py-10 text-center flex-grow">
+        <h2 class="text-2xl font-bold mb-4">
+            <span class="text-green-600">Trusted Medicines,</span> 
+            <span class="text-green-600">Caring Hands,</span> 
+            <span class="text-green-600">Brighter Tomorrow!</span>
+        </h2>
+        
+        <h2 class="text-xl font-bold mb-6">Select Your Department</h2>
+        
+        <input type="text" id="searchBar" onkeyup="filterDepartments()" placeholder="Search department..." class="w-full md:w-1/2 p-2 border rounded mb-6">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <a href="dermatology.html" class="block bg-white p-4 rounded shadow hover:bg-gray-200 department-section">
+                <img src="images/dermatology.jpg" alt="Dermatology" class="w-16 h-16 mx-auto mb-2">
+                <h3 class="text-lg font-bold">Dermatology</h3>
+                <p>Skin care and treatments</p>
+            </a>
+            
+            <a href="cardiac.html" class="block bg-white p-4 rounded shadow hover:bg-gray-200 department-section">
+                <img src="images/cardiac.png" alt="Cardiac" class="w-16 h-16 mx-auto mb-2">
+                <h3 class="text-lg font-bold">Cardiac</h3>
+                <p>Heart and blood-related treatments</p>
+            </a>
+            
+            <a href="neurology.html" class="block bg-white p-4 rounded shadow hover:bg-gray-200 department-section">
+                <img src="images/neurology.png" alt="Neurology" class="w-16 h-16 mx-auto mb-2">
+                <h3 class="text-lg font-bold">Neurology</h3>
+                <p>Brain and nervous system treatments</p>
+            </a>
+            
+            <a href="hepatology.html" class="block bg-white p-4 rounded shadow hover:bg-gray-200 department-section">
+                <img src="images/hepatology.png" alt="Hepatology" class="w-16 h-16 mx-auto mb-2">
+                <h3 class="text-lg font-bold">Hepatology</h3>
+                <p>Liver and digestive system treatments</p>
+            </a>
+            
+            <a href="dental.html" class="block bg-white p-4 rounded shadow hover:bg-gray-200 department-section">
+                <img src="images/dental.jpg" alt="Dental" class="w-16 h-16 mx-auto mb-2">
+                <h3 class="text-lg font-bold">Dental</h3>
+                <p>Oral health and dental care</p>
+            </a>
+            
+            <a href="medical_supplies.html" class="block bg-white p-4 rounded shadow hover:bg-gray-200 department-section">
+                <img src="images/medical_supplies.jpg" alt="Medical Supplies" class="w-16 h-16 mx-auto mb-2">
+                <h3 class="text-lg font-bold">Medical Supplies</h3>
+                <p>Essential medical equipment and tools</p>
+            </a>
+        </div>
+    </main>
+    
+    <footer class="bg-gray-800 text-white text-center p-4 mt-10">
+        <p>&copy; 2025 MedSprout.</p>
+        <p>All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

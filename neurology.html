@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurology Medicines - MEDSPROUT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="neurology.js"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <header class="bg-blue-600 p-4 text-white flex justify-between items-center relative">
+        <h1 class="text-xl font-bold">MedSprout</h1>
+        <div class="relative">
+            <input type="text" id="searchBar" placeholder="Search medicines..." class="px-4 py-2 rounded text-black" onkeyup="searchMedicine()">
+            <div id="suggestions" class="absolute left-0 mt-1 w-full bg-white shadow rounded hidden"></div>
+        </div>
+    </header>
+    
+    <main class="container mx-auto py-10 flex">
+        <div class="w-2/3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6" id="medicine-list">
+            <div class="medicine bg-white p-6 rounded shadow cursor-pointer" data-name="neurogen tablets" onclick="showDetails('Neurogen Tablets', 'Improves brain function and memory.', '₹500', '₹500 (1 strip = 10 tablets)', '01-2023', '12-2025', 'images/neurogen.jpeg', '1 strip = 10 tablets')">
+                <img src="images/neurogen.jpeg" alt="Neurogen Tablets" class="w-full h-56 object-contain mb-2">
+                <h3 class="text-lg font-bold">Neurogen Tablets (1 strip = 10 tablets)</h3>
+                <p>Improves brain function and memory.</p>
+                <p class="font-semibold">Price: ₹500 (1 strip = 10 tablets)</p>
+            </div>
+            <div class="medicine bg-white p-6 rounded shadow cursor-pointer" data-name="brain tonic syrup" onclick="showDetails('Brain Tonic Syrup', 'Helps in reducing mental stress and fatigue.', '₹350', '₹350 (100ml)', '02-2024', '02-2026', 'images/braintonic.jpg', '100ml')">
+                <img src="images/braintonic.jpg" alt="Brain Tonic Syrup" class="w-full h-56 object-contain mb-2">
+                <h3 class="text-lg font-bold">Brain Tonic Syrup (100ml)</h3>
+                <p>Helps in reducing mental stress and fatigue.</p>
+                <p class="font-semibold">Price: ₹350 (100ml)</p>
+            </div>
+            <div class="medicine bg-white p-6 rounded shadow cursor-pointer" data-name="neurolife capsules" onclick="showDetails('Neurolife Capsules', 'Supports brain health and cognitive function.', '₹400', '₹400 (1 strip = 10 capsules)', '03-2023', '03-2026', 'images/neurolife.jpg', '1 strip = 10 capsules')">
+                <img src="images/neurolife.jpg" alt="Neurolife Capsules" class="w-full h-56 object-contain mb-2">
+                <h3 class="text-lg font-bold">Neurolife Capsules (1 strip = 10 capsules)</h3>
+                <p>Supports brain health and cognitive function.</p>
+                <p class="font-semibold">Price: ₹400 (1 strip = 10 capsules)</p>
+            </div>
+            <div class="medicine bg-white p-6 rounded shadow cursor-pointer" data-name="Migraine Medicines" onclick="showDetails('Migraine Tablets', 'Aids in calming the mind and reducing anxiety.', '₹300', '₹300 ', '01-2024', '12-2025', 'images/migraine.jpg', '10 capsules')">
+                <img src="images/migraine.jpg" alt="Migraine Tablets" class="w-full h-56 object-contain mb-2">
+                <h3 class="text-lg font-bold">Mind Calm Syrup (100ml)</h3>
+                <p>Aids in calming the mind and reducing anxiety.</p>
+                <p class="font-semibold">Price: ₹300 (100ml)</p>
+            </div>
+        </div>
+        
+        <div id="medicine-details" class="hidden bg-white p-6 rounded shadow w-1/3 relative">
+            <button onclick="closeDetails()" class="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded">X</button>
+            <img id="medicine-img" src="" alt="Medicine Image" class="w-full h-56 object-contain mb-2">
+            <h3 id="medicine-name" class="text-lg font-bold"></h3>
+            <p id="medicine-description"></p>
+            <p id="medicine-price" class="font-semibold"></p>
+            <p id="medicine-manufacture"></p>
+            <p id="medicine-expiry"></p>
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" value="1" min="1" class="border px-2 py-1 w-16">
+            <button class="mt-2 bg-blue-500 text-white px-4 py-2 rounded" onclick="addToCart()">Add to Cart</button>
+        </div>
+    </main>
+    
+    <footer class="bg-gray-800 text-white text-center p-4 mt-10">&copy; 2025 MedSprout. All Rights Reserved.</footer>
+</body>
+</html>

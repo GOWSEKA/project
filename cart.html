@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedSprout - Cart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function loadCart() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let cartContainer = document.getElementById("cartContainer");
+            let totalAmountElement = document.getElementById("totalAmount");
+            cartContainer.innerHTML = "";
+            let totalAmount = 0;
+
+            if (cart.length === 0) {
+                cartContainer.innerHTML = "<p class='text-red-500'>Your cart is empty.</p>";
+                totalAmountElement.textContent = "₹0";
+                return;
+            }
+
+            cart.forEach((item, index) => {
+                let itemPrice = item.quantity * parseFloat(item.price);
+                totalAmount += itemPrice;
+
+                let itemDiv = document.createElement("div");
+                itemDiv.className = "flex justify-between items-center p-4 bg-white shadow rounded mb-4";
+                itemDiv.innerHTML = `
+                    <div>
+                        <h3 class="text-lg font-bold">${item.name}</h3>
+                        <p class="font-semibold">Price per unit: ₹${item.price}</p>
+                        <p class="font-bold text-green-600">Total: ₹${itemPrice.toFixed(2)}</p>
+                    </div>
+                    <div class="flex items-center">
+                        <button onclick="changeQuantity(${index}, -1)" class="px-3 py-1 bg-red-500 text-white rounded">-</button>
+                        <span class="px-4">${item.quantity}</span>
+                        <button onclick="changeQuantity(${index}, 1)" class="px-3 py-1 bg-green-500 text-white rounded">+</button>
+                        <button onclick="removeItem(${index})" class="ml-4 px-3 py-1 bg-gray-600 text-white rounded">Remove</button>
+                    </div>
+                `;
+                cartContainer.appendChild(itemDiv);
+            });
+
+            totalAmountElement.textContent = `₹${totalAmount.toFixed(2)}`;
+        }
+
+        function changeQuantity(index, change) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart[index].quantity += change;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount();
+            loadCart();
+        }
+
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount();
+            loadCart();
+        }
+
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            localStorage.setItem("cartCount", cartCount);
+            let cartCountElement = document.getElementById("cartCount");
+            if (cartCountElement) {
+                cartCountElement.innerText = cartCount;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadCart);
+    </script>
+</head>
+<body class="bg-gray-100 font-sans flex flex-col min-h-screen">
+    <header class="bg-blue-600 p-4 text-white flex justify-between items-center">
+        <h1 class="text-2xl font-bold">MedSprout</h1>
+        <a href="index.html" class="text-white underline">Home</a>
+        <span class="text-white">Cart Items: <span id="cartCount">0</span></span>
+    </header>
+
+    <main class="container mx-auto py-10 flex-grow">
+        <h2 class="text-2xl font-bold mb-6">Your Cart</h2>
+        <div id="cartContainer" class="space-y-4"></div>
+        <div class="mt-6 p-4 bg-gray-200 rounded-lg text-xl font-semibold">
+            Total Cart Value: <span id="totalAmount">₹0</span>
+        </div>
+        <div class="mt-6 text-center">
+            <a href="cart1.html" class="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600">Proceed to Buy</a>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4 mt-10">
+        <p>&copy; 2025 MedSprout.</p>
+        <p>All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
